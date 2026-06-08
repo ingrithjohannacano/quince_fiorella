@@ -15,27 +15,7 @@
   --cream:#FFF8FB;--dark:#3D1A2E;--text:#5C2B40;
 }
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--cream);font-family:'Lato',sans-serif;color:var(--text);overflow-x:hidden}
-
-/* Estilos para el bloque interactivo */
-.section-title{font-family:'Playfair Display',serif;font-size:1.6em;color:var(--pk7);margin-bottom:6px}
-.section-sub{color:var(--text);margin-bottom:20px}
-.inter-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
-.inter-card{background:var(--pk4);padding:20px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.1);width:280px;text-align:center}
-.inter-ico{font-size:2em}
-.inter-title{font-weight:bold;margin:10px 0;color:var(--pk6)}
-.inter-desc{font-size:.9em;margin-bottom:10px}
-.song-input,.rsvp-input{width:100%;padding:8px;margin:6px 0;border:1px solid var(--pk2);border-radius:6px}
-.glam-btn{background:var(--pk5);color:#fff;border:none;border-radius:6px;cursor:pointer}
-.glam-btn:hover{background:var(--pk6)}
-.glam-btn.outline{background:none;border:1px solid var(--pk5);color:var(--pk5)}
-.song-item,.rsvp-item{margin-top:6px;font-size:.85em;color:var(--dark)}
-.qr-label{font-size:.8em;color:var(--text);margin:8px 0}
-.qr-url{font-size:.75em;color:var(--pk7)}
-</style>
-</head>
-<body>
-
+body{background:var(--cream);font-family:'Lato',sans-serif;color:var(--text);cursor:none;overflow-x:hidden}
 <!-- INTERACTIVO -->
 <section id="interactivo">
   <h2 class="section-title">¡Participa!</h2>
@@ -86,6 +66,9 @@ body{background:var(--cream);font-family:'Lato',sans-serif;color:var(--text);ove
     </div>
   </div>
 </section>
+
+<!-- LIBRERÍA QR -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
 <!-- FUNCIONES JS -->
 <script>
@@ -162,9 +145,13 @@ async function sendRsvp(name, response){
 // --- QR dinámico ---
 document.addEventListener("DOMContentLoaded", function() {
   new QRCode(document.getElementById("qr-container"), {
-    text: "https://photos.app.g
+    text: "https://photos.app.goo.gl/upsY1cmEoH16ekhB9",
+    width: 128,
+    height: 128
+  });
+});
+</script>
 
-      
 /* CURSOR */vestimenta
 #cur{position:fixed;width:16px;height:16px;background:radial-gradient(circle,var(--pk1) 20%,transparent 70%);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
 #cur2{position:fixed;width:32px;height:32px;border:1px solid rgba(255,111,168,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease}
@@ -1122,6 +1109,12 @@ footer::before{content:'';position:absolute;inset:0;background:url("data:image/s
     <div style="position:absolute;bottom:8px;left:10px;font-size:1.1rem;opacity:.25">🌺</div>
     <div style="position:absolute;bottom:8px;right:10px;font-size:1.1rem;opacity:.25">🌺</div>
   </div>
+
+</section>
+
+
+
+
 
 </section>
 
