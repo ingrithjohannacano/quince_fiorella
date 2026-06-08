@@ -1016,7 +1016,7 @@ footer::before{content:'';position:absolute;inset:0;background:url("data:image/s
 
 <!-- FUNCIONES JS -->
 <script>
-const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxnS7046KpwHpEqUyYTJ4whK2KvX8HgePPq4xnhN2KdeLKZHQEnKBHN_m02J16J8Z4bNg/exec";
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxO7dIX7wSWMgjjU5UNQf8lvYgqocFKELc8cUJ_S4VtNPE2le7LG7q7dtvOqR7cFmeSoA/exec";
 
 // --- Sugerir Canción ---
 function addSong() {
@@ -1076,7 +1076,6 @@ document.addEventListener("DOMContentLoaded", function() {
   });
 });
 </script>
-
 
 
 
