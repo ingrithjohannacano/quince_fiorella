@@ -15,8 +15,156 @@
   --cream:#FFF8FB;--dark:#3D1A2E;--text:#5C2B40;
 }
 html{scroll-behavior:smooth;overflow-x:hidden}
-body{background:var(--cream);font-family:'Lato',sans-serif;color:var(--text);cursor:none;overflow-x:hidden}
+body{background:var(--cream);font-family:'Lato',sans-serif;color:var(--text);overflow-x:hidden}
 
+/* Estilos para el bloque interactivo */
+.section-title{font-family:'Playfair Display',serif;font-size:1.6em;color:var(--pk7);margin-bottom:6px}
+.section-sub{color:var(--text);margin-bottom:20px}
+.inter-grid{display:flex;flex-wrap:wrap;justify-content:center;gap:20px}
+.inter-card{background:var(--pk4);padding:20px;border-radius:12px;box-shadow:0 4px 10px rgba(0,0,0,.1);width:280px;text-align:center}
+.inter-ico{font-size:2em}
+.inter-title{font-weight:bold;margin:10px 0;color:var(--pk6)}
+.inter-desc{font-size:.9em;margin-bottom:10px}
+.song-input,.rsvp-input{width:100%;padding:8px;margin:6px 0;border:1px solid var(--pk2);border-radius:6px}
+.glam-btn{background:var(--pk5);color:#fff;border:none;border-radius:6px;cursor:pointer}
+.glam-btn:hover{background:var(--pk6)}
+.glam-btn.outline{background:none;border:1px solid var(--pk5);color:var(--pk5)}
+.song-item,.rsvp-item{margin-top:6px;font-size:.85em;color:var(--dark)}
+.qr-label{font-size:.8em;color:var(--text);margin:8px 0}
+.qr-url{font-size:.75em;color:var(--pk7)}
+</style>
+</head>
+<body>
+
+<!-- INTERACTIVO -->
+<section id="interactivo">
+  <h2 class="section-title">¡Participa!</h2>
+  <p class="section-sub">Hazla aún más especial 🎵📷</p>
+  <div class="inter-grid">
+    
+    <!-- Sugerir Canción -->
+    <div class="inter-card" id="songCard">
+      <span class="inter-ico">🎵</span>
+      <div class="inter-title">Sugiere una Canción</div>
+      <p class="inter-desc">¿Cuál no puede faltar en la fiesta de Fiorella?</p>
+      <div class="song-form">
+        <input class="song-input" id="songArtist" placeholder="Artista / Banda">
+        <input class="song-input" id="songName" placeholder="Nombre de la canción">
+        <button class="glam-btn" onclick="addSong()" style="font-size:.65rem;padding:11px 16px">🎶 Sugerir canción</button>
+      </div>
+      <div class="song-list" id="songList"></div>
+    </div>
+
+    <!-- Subir Fotos -->
+    <div class="inter-card" id="photoCard" style="transition-delay:.15s">
+      <span class="inter-ico">📷</span>
+      <div class="inter-title">Sube tus Fotos</div>
+      <p class="inter-desc">Escanea el QR y comparte tus fotos de la noche en el álbum de Fiorella</p>
+      <div class="qr-label">Álbum compartido · Fiorella 2026</div>
+      <div id="qr-container"></div>
+      <p class="qr-url">https://photos.app.goo.gl/upsY1cmEoH16ekhB9</p>
+      <a class="glam-btn outline" href="https://photos.app.goo.gl/upsY1cmEoH16ekhB9" target="_blank" style="margin-top:14px;font-size:.65rem;padding:10px 20px">
+        📸 Abrir álbum
+      </a>
+    </div>
+
+    <!-- Confirmar Asistencia -->
+    <div class="inter-card" id="rsvpCard" style="transition-delay:.3s">
+      <span class="inter-ico">✅</span>
+      <div class="inter-title">Confirma tu Asistencia</div>
+      <p class="inter-desc">Hazme saber si podrás acompañarme</p>
+      <div class="rsvp-form">
+        <input class="rsvp-input" id="guestName" placeholder="Tu nombre">
+        <select class="rsvp-input" id="guestResponse">
+          <option value="">Selecciona una opción</option>
+          <option value="Sí">Sí asistiré</option>
+          <option value="No">No podré</option>
+        </select>
+        <button class="glam-btn" onclick="addRsvp()" style="font-size:.65rem;padding:11px 16px">✅ Confirmar</button>
+      </div>
+      <div class="rsvp-list" id="rsvpList"></div>
+    </div>
+  </div>
+</section>
+
+<!-- FUNCIONES JS -->
+<script>
+const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxnS7046KpwHpEqUyYTJ4whK2KvX8HgePPq4xnhN2KdeLKZHQEnKBHN_m02J16J8Z4bNg/exec";
+
+// --- Sugerir Canción ---
+function addSong() {
+  const artist = document.getElementById("songArtist").value.trim();
+  const name = document.getElementById("songName").value.trim();
+
+  if (!artist || !name) {
+    alert("Por favor escribe artista y canción 🎶");
+    return;
+  }
+
+  // Mostrar en la lista local
+  const list = document.getElementById("songList");
+  const item = document.createElement("div");
+  item.className = "song-item";
+  item.innerHTML = `<strong>${artist}</strong> — ${name}`;
+  list.appendChild(item);
+
+  // Enviar al Google Sheets (canciones)
+  sendSong(artist, name);
+
+  // Limpiar campos
+  document.getElementById("songArtist").value = "";
+  document.getElementById("songName").value = "";
+}
+
+async function sendSong(artist, song){
+  const data = { type: "song", artist: artist, song: song };
+  await fetch(WEBAPP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+}
+
+// --- RSVP Invitados ---
+function addRsvp() {
+  const name = document.getElementById("guestName").value.trim();
+  const response = document.getElementById("guestResponse").value;
+
+  if (!name || !response) {
+    alert("Por favor escribe tu nombre y selecciona respuesta ✅");
+    return;
+  }
+
+  // Mostrar en la lista local
+  const list = document.getElementById("rsvpList");
+  const item = document.createElement("div");
+  item.className = "rsvp-item";
+  item.innerHTML = `<strong>${name}</strong> — ${response}`;
+  list.appendChild(item);
+
+  // Enviar al Google Sheets (invitados)
+  sendRsvp(name, response);
+
+  // Limpiar campos
+  document.getElementById("guestName").value = "";
+  document.getElementById("guestResponse").value = "";
+}
+
+async function sendRsvp(name, response){
+  const data = { type: "rsvp", name: name, response: response };
+  await fetch(WEBAPP_URL, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(data)
+  });
+}
+
+// --- QR dinámico ---
+document.addEventListener("DOMContentLoaded", function() {
+  new QRCode(document.getElementById("qr-container"), {
+    text: "https://photos.app.g
+
+      
 /* CURSOR */vestimenta
 #cur{position:fixed;width:16px;height:16px;background:radial-gradient(circle,var(--pk1) 20%,transparent 70%);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:multiply}
 #cur2{position:fixed;width:32px;height:32px;border:1px solid rgba(255,111,168,.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:all .18s ease}
